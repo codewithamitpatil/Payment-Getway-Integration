@@ -15,13 +15,17 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.11.1",
+    "gitignore": "^0.6.0",
     "helmet": "^4.6.0",
     "http-errors": "^1.7.2",
     "mongoose": "^5.12.10",
+    "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "redis": "^3.1.2"
   }
