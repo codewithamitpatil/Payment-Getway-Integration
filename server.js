@@ -1,89 +1,74 @@
 
-const express     = require('express');
-const bodyParser  = require('body-parser');
-const cors        = require('cors');
-const HttpErrors  = require('http-errors');
-const path        = require('path');
-const multer      = require('multer');
-const morgan      = require('morgan');
+const express    = require('express');
+const razorpay   = require('razorpay');
+const bodyParser = require('body-parser');
+const multer     = require('multer');
+const cors       = require('cors');
 
-
-// env file
-require('dotenv').config();
-
-
-// includes
-const errorHandler = require('./error/errorHandler');
-const mongodb      = require('./config/init_mongodb');
-const AuthGard     = require('./helpers/jwt.helpers');
-const asyncHandler = require('./middlewares/async.middleware');
-
-// require routes 
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-
-
-
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 const app = express();
-
 const upload = multer();
 
+// intializing template engine
+app.set('views','views');
+app.set('view engine','ejs');
 
 
-//  request  log (morgan)
-    app.use(morgan('dev'));
-
-//  cors mechanism
-    app.use('*',cors());
-
-//  json parsing
-    app.use(bodyParser.json());
-
-//  urlencoded data parsing
-    app.use(bodyParser.urlencoded({extended:true}));
-
-// formdata / multipart data parsing
-//app.use(upload.array());
-
-   
-//  demo route
-    app.get('',AuthGard.VerifyAccessToken,
-               asyncHandler(async(req,res,next)=>{
- 
-       res.send('welcome home');
-       return;
-   
+app.use(express.static('public'));
 
 
+// form data / multipart data  parsing 
+app.use(upload.array());
 
-    }));
+// json parsing
+app.use(bodyParser.json());
 
-//  use routes
-    app.use("/Auth",authRoutes);
-    app.use("/User",userRoutes);
-
-//  404 page handler
-    app.all('*',async(req,res,next)=>{
-        next(new HttpErrors.NotFound('Requested page was not found'));
-    });
+// url encoded data parsing
+app.use(bodyParser.urlencoded({extended:true}));
 
 
-// global error handler
-   app.use(errorHandler.ErrorResponse);
+// cors mechanism
+app.use(cors("*"));
 
-// listen server
-   const server = app.listen(PORT,()=>{
-    console.log(`Server is listening on port ${PORT}`);
-   });
+// razor pay get into picture 
+const Razorpay =new razorpay({
+     key_id:'rzp_test_TX6V4qZdN5epaE',
+     key_secret:'R5xbL5fNlm1ynFPFjlr6Pw7d'
+});
 
-// Handle unhandled promise rejections
-   process.on('unhandledRejection', (err, promise) => {
-        
-        console.log(`Error: ${err.message}`);
-        // Close server & exit process
-        server.close(() => process.exit(1));
 
-   });
+app.get("",async(req,res)=>{
 
+
+      res.render('razorpay.ejs');
+     //  res.send('wekcome');
+});
+
+app.get("/cdn",async(req,res)=>{
+
+
+  res.render('amit.ejs');
+
+});
+
+app.post("/order",async(req,res)=>{
+
+    var options = {
+        amount: 50000,  
+        currency: "INR",
+      };
+
+      Razorpay.orders.create(options, function(err, order) {
+        console.log(order);
+        res.json(order);
+      });
+
+
+});
+
+
+// start server
+app.listen(PORT,()=>{
+   console.log(`server is listening on port : ${PORT}`);
+});
