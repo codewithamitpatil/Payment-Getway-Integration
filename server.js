@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const multer     = require('multer');
 const cors       = require('cors');
 
-const PORT = 3000;
+const PORT = 3000 || process.env.PORT;
 
 const app = express();
 const upload = multer();
