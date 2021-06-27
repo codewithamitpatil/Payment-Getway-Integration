@@ -1,6 +1,37 @@
 # Payment-Getway-Integration
 
->Screen Shots
+## Technology
+
+> Node Js
+
+> Express Js
+
+> Razorpay payment getway
+
+> Heroku hosting
+
+## Demo Link
+[Demo Link](https://paymentgetwaywithamit.herokuapp.com/)
+
+> Card No
+-5104 0600 0000 0008
+
+>CVV
+-Any random number
+
+>Date
+-Any Future date
+
+>Phone
+-your mobile no.
+
+>Email
+-Your Email Id
+
+ ## Screen Shots
+
+
+
 
 ![Screenshot from 2021-06-27 17-47-21](https://user-images.githubusercontent.com/62344675/123544269-1c894800-d770-11eb-8464-094468b59d70.png)
 
